@@ -13,6 +13,10 @@ Simulation::Simulation(double inter_arrival_time_mean, double service_time_mean,
     this->inter_arrival_time_mean = inter_arrival_time_mean;
     this->service_time_mean = service_time_mean;
     this->number_of_customers = number_of_customers;
+
+    // Set up the random number generators
+    this->inter_arrival_time_generator.SetMean(this->inter_arrival_time_mean);
+    this->service_time_generator.SetMean(this->service_time_mean);
 }
 
 void Simulation::UpdateTime(double time) { this->clock = time; }
@@ -24,11 +28,10 @@ void Simulation::Initialize()
     this->server_status = ServerStatus::IDLE;
 
     // Schedule the first arrival event
-    Event arrival_event(EventType::ARRIVAL, this->clock + ExponentialRandomNumber::GetRandomNumber(inter_arrival_time_mean));
+    Event arrival_event(EventType::ARRIVAL, this->clock + this->inter_arrival_time_generator.GetRandomNumber());
     this->event_queue.push(arrival_event);
 }
 
-int i = 1;
 void Simulation::Run()
 {
     // Run simulation till event queue is empty
@@ -52,10 +55,10 @@ void Simulation::HandleArrival()
     // Create a new Customer
     Customer customer(this->clock);
 
-    // Schedule next arrival event if customers limit is not crossed
+    // Schedule next arrival event if customer limit is not crossed
     if (this->number_of_customers > Customer::GetTotalCustomers())
     {
-        Event arrival_event(EventType::ARRIVAL, this->clock + ExponentialRandomNumber::GetRandomNumber(inter_arrival_time_mean));
+        Event arrival_event(EventType::ARRIVAL, this->clock + this->inter_arrival_time_generator.GetRandomNumber());
         this->event_queue.push(arrival_event);
     }
 
@@ -81,7 +84,7 @@ void Simulation::HandleArrival()
         this->server_status = ServerStatus::BUSY;
 
         // Schedule the departure event (end of service)
-        Event departure_event(EventType::DEPARTURE, this->clock + ExponentialRandomNumber::GetRandomNumber(service_time_mean));
+        Event departure_event(EventType::DEPARTURE, this->clock + this->service_time_generator.GetRandomNumber());
         this->event_queue.push(departure_event);
 
         // Log the service event
@@ -110,7 +113,7 @@ void Simulation::HandleDeparture()
         this->server_status = ServerStatus::BUSY;
 
         // Schedule the departure event (end of service)
-        Event departure_event(EventType::DEPARTURE, this->clock + ExponentialRandomNumber::GetRandomNumber(service_time_mean));
+        Event departure_event(EventType::DEPARTURE, this->clock + this->service_time_generator.GetRandomNumber());
         this->event_queue.push(departure_event);
 
         // Log the service event

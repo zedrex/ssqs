@@ -1,12 +1,21 @@
 #include <random>
 #include "exponential_random_number.h"
 
-double ExponentialRandomNumber::GetRandomNumber(double mean)
+ExponentialRandomNumber::ExponentialRandomNumber()
 {
-    // double random_variable = rand() / RAND_MAX;
-    // double exponential_random_number = -mean * log(random_variable);
-    // return exponential_random_number;
+    // Initialize Mersenne Twister PRNG
+    this->random_generator = std::mt19937(this->random_device());
 
-    // Placeholder random number (mean to 10 with 1 decimal place) because above work doesn't work
-    return (rand() % 100 + mean) / 10.0;
+    // Initialize uniform random variable generator
+    this->uniform_random_numbers = std::uniform_real_distribution<double>(0, 1);
+}
+
+void ExponentialRandomNumber::SetMean(double mean)
+{
+    this->mean = mean;
+}
+
+double ExponentialRandomNumber::GetRandomNumber()
+{
+    return -log(this->uniform_random_numbers(this->random_generator)) * this->mean;
 }

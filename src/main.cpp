@@ -12,9 +12,6 @@ int main()
     // Add the label line in output.csv
     std::cout << "No.,Event Type,Current Time,Customer Serial,Server Status,Queue Size" << std::endl;
 
-    // Seed the random number generator
-    srand(time(nullptr));
-
     // Simulation parameters
     int number_of_customers;
     double inter_arrival_time_mean, service_time_mean;

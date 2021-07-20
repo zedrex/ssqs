@@ -32,6 +32,12 @@ class Simulation
     // Average service time per customer
     double service_time_mean;
 
+    // Exponential RNG for inter-arrival time
+    ExponentialRandomNumber inter_arrival_time_generator;
+
+    // Exponential RNG for service time
+    ExponentialRandomNumber service_time_generator;
+
     // Total customers for current simulation (terminates when reaches the limit)
     int number_of_customers;
 
