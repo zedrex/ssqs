@@ -1,5 +1,4 @@
 #include "customer.h"
-#include <iostream>
 
 int Customer::total_customer = 0;
 
