@@ -5,22 +5,48 @@
 
 int main()
 {
-    // Input and output file initialization
-    freopen("input.in", "r", stdin);
-    freopen("output.csv", "w", stdout);
-
-    // Add the label line in output.csv
-    std::cout << "No.,Event Type,Current Time,Customer Serial,Server Status,Queue Size" << std::endl;
-
     // Simulation parameters
     int number_of_customers;
     double inter_arrival_time_mean, service_time_mean;
-    std::cin >> inter_arrival_time_mean >> service_time_mean >> number_of_customers;
+
+    // Input
+    std::cout << "Inter Arrival Time Mean: ";
+    std::cin >> inter_arrival_time_mean;
+
+    std::cout << "Service Time Mean: ";
+    std::cin >> service_time_mean;
+
+    std::cout << "Total Number of Customers: ";
+    std::cin >> number_of_customers;
 
     // Create and run the simulation
     Simulation simulation(inter_arrival_time_mean, service_time_mean, number_of_customers);
     simulation.Initialize();
     simulation.Run();
+
+    // Create conclusive data from simulation
+    simulation.GetSimulationLog()->CreateSimulationSummary();
+    simulation.GetSimulationLog()->CreateStatisticalData();
+
+    // Output data to separate files
+
+    // Set decimal precision to 2 places
+    std::cout.precision(2);
+
+    // Event records
+    freopen("event.csv", "w", stdout);
+    std::cout << simulation.GetSimulationLog()->GetEventRecords();
+    fclose(stdout);
+
+    // Customer records
+    freopen("customer.csv", "w", stdout);
+    std::cout << simulation.GetSimulationLog()->GetCustomerRecords();
+    fclose(stdout);
+
+    // Statistics records
+    freopen("statistics.csv", "w", stdout);
+    std::cout << simulation.GetSimulationLog()->GetSimulationStatistics();
+    fclose(stdout);
 
     return 0;
 }

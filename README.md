@@ -14,87 +14,136 @@ make
 
 
 ## Set Simulation Parameters (Input)
-In `src/input.in`, enter inter-arrival time mean, service time mean and customer limit (separated by space or newline):
+Input data after running `main`:
+
+Sample Input
 ```text
-5 4 10
+Inter Arrival Time Mean: 4
+Service Time Mean: 6
+Total Number of Customers: 10
 ```
 
 <hr>
 
 ## Check Simulation Data (Output)
-The program produces `src/output.csv` on a successful run. For the above `input.in`, the output is:
+The program produces `src/statistics.csv`, `src/event.csv` and `src/customer.csv` on a successful run. For the above input, sample output is:
 
 ### Tabular Output:
-| No. | Event Type | Current Time | Customer Serial | Server Status | Queue Size |
-| --- | ---------- | ------------ | --------------- | ------------- | ---------- |
-| 1   | Arrival    | 1.97944      | 1               | Idle          | 0          |
-| 2   | Service    | 1.97944      | 1               | Busy          | 0          |
-| 3   | Departure  | 4.1649       | 1               | Idle          | 0          |
-| 4   | Arrival    | 5.0042       | 2               | Idle          | 0          |
-| 5   | Service    | 5.0042       | 2               | Busy          | 0          |
-| 6   | Departure  | 5.90715      | 2               | Idle          | 0          |
-| 7   | Arrival    | 14.8094      | 3               | Idle          | 0          |
-| 8   | Service    | 14.8094      | 3               | Busy          | 0          |
-| 9   | Departure  | 15.2707      | 3               | Idle          | 0          |
-| 10  | Arrival    | 42.7834      | 4               | Idle          | 0          |
-| 11  | Service    | 42.7834      | 4               | Busy          | 0          |
-| 12  | Arrival    | 43.2376      | 5               | Busy          | 1          |
-| 13  | Departure  | 43.6709      | 4               | Idle          | 1          |
-| 14  | Service    | 43.6709      | 5               | Busy          | 0          |
-| 15  | Departure  | 46.8539      | 5               | Idle          | 0          |
-| 16  | Arrival    | 47.3823      | 6               | Idle          | 0          |
-| 17  | Service    | 47.3823      | 6               | Busy          | 0          |
-| 18  | Departure  | 49.7028      | 6               | Idle          | 0          |
-| 19  | Arrival    | 56.6407      | 7               | Idle          | 0          |
-| 20  | Service    | 56.6407      | 7               | Busy          | 0          |
-| 21  | Arrival    | 57.9584      | 8               | Busy          | 1          |
-| 22  | Departure  | 59.9565      | 7               | Idle          | 1          |
-| 23  | Service    | 59.9565      | 8               | Busy          | 0          |
-| 24  | Departure  | 66.8152      | 8               | Idle          | 0          |
-| 25  | Arrival    | 72.7181      | 9               | Idle          | 0          |
-| 26  | Service    | 72.7181      | 9               | Busy          | 0          |
-| 27  | Departure  | 75.107       | 9               | Idle          | 0          |
-| 28  | Arrival    | 75.2946      | 10              | Idle          | 0          |
-| 29  | Service    | 75.2946      | 10              | Busy          | 0          |
-| 30  | Departure  | 76.8139      | 10              | Idle          | 0          |
+#### `src/statistics.csv`
+| Total Customers | Total Simulation Time | Average Inter Arrival Time | Average Service Time | Average Queue Delay | Average Queue Length | Server Utilization |
+| --------------- | --------------------- | -------------------------- | -------------------- | ------------------- | -------------------- | ------------------ |
+| 10.000000       | 104.499340            | 4.854019                   | 9.154132             | 23.162624           | 2.216533             | 87.599907%         |
+
+
+
+
+#### `src/event.csv'
+| Type      | Start Time | Customer | Server Status | Queue Size |
+| --------- | ---------- | -------- | ------------- | ---------- |
+| Arrival   | 12.958016  | 1        | Idle          | 0          |
+| Service   | 12.958016  | 1        | Busy          | 0          |
+| Arrival   | 13.423813  | 2        | Busy          | 1          |
+| Arrival   | 21.207898  | 3        | Busy          | 2          |
+| Departure | 27.192960  | 1        | Idle          | 2          |
+| Service   | 27.192960  | 2        | Busy          | 1          |
+| Arrival   | 34.042522  | 4        | Busy          | 2          |
+| Arrival   | 36.666250  | 5        | Busy          | 3          |
+| Arrival   | 39.621414  | 6        | Busy          | 4          |
+| Arrival   | 39.806383  | 7        | Busy          | 5          |
+| Departure | 41.712128  | 2        | Idle          | 5          |
+| Service   | 41.712128  | 3        | Busy          | 4          |
+| Arrival   | 41.877507  | 8        | Busy          | 5          |
+| Arrival   | 43.990001  | 9        | Busy          | 6          |
+| Arrival   | 48.540185  | 10       | Busy          | 7          |
+| Departure | 56.111086  | 3        | Idle          | 7          |
+| Service   | 56.111086  | 4        | Busy          | 6          |
+| Departure | 57.794390  | 4        | Idle          | 6          |
+| Service   | 57.794390  | 5        | Busy          | 5          |
+| Departure | 58.596279  | 5        | Idle          | 5          |
+| Service   | 58.596279  | 6        | Busy          | 4          |
+| Departure | 59.481223  | 6        | Idle          | 4          |
+| Service   | 59.481223  | 7        | Busy          | 3          |
+| Departure | 63.245329  | 7        | Idle          | 3          |
+| Service   | 63.245329  | 8        | Busy          | 2          |
+| Departure | 83.000098  | 8        | Idle          | 2          |
+| Service   | 83.000098  | 9        | Busy          | 1          |
+| Departure | 103.668718 | 9        | Idle          | 1          |
+| Service   | 103.668718 | 10       | Busy          | 0          |
+| Departure | 104.499340 | 10       | Idle          | 0          |
+
+
+
+
+#### `src/customer.csv`
+| Serial | Arrival Time | Queue Time | Service Start Time | Service Duration | Departure Time |
+| ------ | ------------ | ---------- | ------------------ | ---------------- | -------------- |
+| 1      | 12.958016    | 0.000000   | 12.958016          | 14.234944        | 27.192960      |
+| 2      | 13.423813    | 13.769146  | 27.192960          | 14.519168        | 41.712128      |
+| 3      | 21.207898    | 20.504230  | 41.712128          | 14.398958        | 56.111086      |
+| 4      | 34.042522    | 22.068564  | 56.111086          | 1.683304         | 57.794390      |
+| 5      | 36.666250    | 21.128140  | 57.794390          | 0.801889         | 58.596279      |
+| 6      | 39.621414    | 18.974865  | 58.596279          | 0.884944         | 59.481223      |
+| 7      | 39.806383    | 19.674840  | 59.481223          | 3.764105         | 63.245329      |
+| 8      | 41.877507    | 21.367822  | 63.245329          | 19.754770        | 83.000098      |
+| 9      | 43.990001    | 39.010098  | 83.000098          | 20.668620        | 103.668718     |
+| 10     | 48.540185    | 55.128533  | 103.668718         | 0.830622         | 104.499340     |
+
 
 <hr>
 
+
 ### Raw CSV Data:
+#### `src/statistics.csv`
 ```csv
-No.,Event Type,Current Time,Customer Serial,Server Status,Queue Size
-1,Arrival,1.97944,1,Idle,0
-2,Service,1.97944,1,Busy,0
-3,Departure,4.1649,1,Idle,0
-4,Arrival,5.0042,2,Idle,0
-5,Service,5.0042,2,Busy,0
-6,Departure,5.90715,2,Idle,0
-7,Arrival,14.8094,3,Idle,0
-8,Service,14.8094,3,Busy,0
-9,Departure,15.2707,3,Idle,0
-10,Arrival,42.7834,4,Idle,0
-11,Service,42.7834,4,Busy,0
-12,Arrival,43.2376,5,Busy,1
-13,Departure,43.6709,4,Idle,1
-14,Service,43.6709,5,Busy,0
-15,Departure,46.8539,5,Idle,0
-16,Arrival,47.3823,6,Idle,0
-17,Service,47.3823,6,Busy,0
-18,Departure,49.7028,6,Idle,0
-19,Arrival,56.6407,7,Idle,0
-20,Service,56.6407,7,Busy,0
-21,Arrival,57.9584,8,Busy,1
-22,Departure,59.9565,7,Idle,1
-23,Service,59.9565,8,Busy,0
-24,Departure,66.8152,8,Idle,0
-25,Arrival,72.7181,9,Idle,0
-26,Service,72.7181,9,Busy,0
-27,Departure,75.107,9,Idle,0
-28,Arrival,75.2946,10,Idle,0
-29,Service,75.2946,10,Busy,0
-30,Departure,76.8139,10,Idle,0
+Total Customers,Total Simulation Time,Average Inter Arrival Time,Average Service Time,Average Queue Delay,Average Queue Length,Server Utilization
+10.000000,104.499340,4.854019,9.154132,23.162624,2.216533,87.599907%
 ```
 
-
-# Todo:
-- Add functionality to Log class to save all data and produce data insight
+#### `src/event.csv`
+```csv
+Type,Start Time,Customer,Server Status,Queue Size
+Arrival,12.958016,1,Idle,0
+Service,12.958016,1,Busy,0
+Arrival,13.423813,2,Busy,1
+Arrival,21.207898,3,Busy,2
+Departure,27.192960,1,Idle,2
+Service,27.192960,2,Busy,1
+Arrival,34.042522,4,Busy,2
+Arrival,36.666250,5,Busy,3
+Arrival,39.621414,6,Busy,4
+Arrival,39.806383,7,Busy,5
+Departure,41.712128,2,Idle,5
+Service,41.712128,3,Busy,4
+Arrival,41.877507,8,Busy,5
+Arrival,43.990001,9,Busy,6
+Arrival,48.540185,10,Busy,7
+Departure,56.111086,3,Idle,7
+Service,56.111086,4,Busy,6
+Departure,57.794390,4,Idle,6
+Service,57.794390,5,Busy,5
+Departure,58.596279,5,Idle,5
+Service,58.596279,6,Busy,4
+Departure,59.481223,6,Idle,4
+Service,59.481223,7,Busy,3
+Departure,63.245329,7,Idle,3
+Service,63.245329,8,Busy,2
+Departure,83.000098,8,Idle,2
+Service,83.000098,9,Busy,1
+Departure,103.668718,9,Idle,1
+Service,103.668718,10,Busy,0
+Departure,104.499340,10,Idle,0
+```
+#### `src/customer.csv`
+```csv
+Serial,Arrival Time,Queue Time,Service Start Time,Service Duration,Departure Time
+1,12.958016,0.000000,12.958016,14.234944,27.192960
+2,13.423813,13.769146,27.192960,14.519168,41.712128
+3,21.207898,20.504230,41.712128,14.398958,56.111086
+4,34.042522,22.068564,56.111086,1.683304,57.794390
+5,36.666250,21.128140,57.794390,0.801889,58.596279
+6,39.621414,18.974865,58.596279,0.884944,59.481223
+7,39.806383,19.674840,59.481223,3.764105,63.245329
+8,41.877507,21.367822,63.245329,19.754770,83.000098
+9,43.990001,39.010098,83.000098,20.668620,103.668718
+10,48.540185,55.128533,103.668718,0.830622,104.499340
+```

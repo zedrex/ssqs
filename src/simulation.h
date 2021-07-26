@@ -6,16 +6,20 @@
 
 #include "event.h"
 #include "customer.h"
-#include "server_status.h"
+#include "server.h"
+#include "simulation_log.h"
 #include "exponential_random_number.h"
 
 class Simulation
 {
-    // Simulation clock time (updates based on event invokes)
+    // Simulation clock time (Updates based on event invoke time)
     double clock;
 
+    // Simulation Log
+    SimulationLog simulation_log;
+
     // Server status (IDLE | BUSY)
-    ServerStatus server_status;
+    Server server;
 
     // Reference to the currently served customer
     Customer currently_served_customer;
@@ -59,6 +63,18 @@ public:
 
     // Handles the departure of a customer from the system
     void HandleDeparture();
+
+    // Creates logs for arrival event for a new customer
+    void CreateArrivalLog(Customer customer);
+
+    // Creates logs for service event
+    void CreateServiceLog();
+
+    // Creates logs for departure event
+    void CreateDepartureLog();
+
+    // Access Simulation Log
+    SimulationLog *GetSimulationLog();
 };
 
 #endif

@@ -3,13 +3,19 @@
 
 class Customer
 {
-    // Customer's arrival to the system according to simulation clock
+    // Arrival time by simulation clock
     double arrival_time;
 
-    // Customer serial based on arrival time
+    // Start time of service by simulation clock
+    double service_start_time;
+
+    // Departure time by simulation clock
+    double departure_time;
+
+    // Serial based on arrival time by simulation clock
     int serial;
 
-    // Keeps track of the total number of customers for the simulation
+    // Total number of customers for the simulation
     static int total_customer;
 
 public:
@@ -21,6 +27,16 @@ public:
 
     // Returns the arrival serial of the customer
     int GetSerial();
+
+    // Set service start time by the simulation clock
+    void SetServiceStartTime(double time);
+
+    // Set departure time from the system by the simulation clock
+    void SetDepartureTime(double time);
+
+    double GetArrivalTime();
+    double GetServiceStartTime();
+    double GetDepartureTime();
 
     // Returns the total number of customer so far (whole simulation)
     static int GetTotalCustomers();

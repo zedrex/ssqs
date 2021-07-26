@@ -2,10 +2,10 @@
 #include <limits>
 
 #include "simulation.h"
-#include "log.h"
+#include "simulation_log.h"
 #include "event.h"
 #include "customer.h"
-#include "server_status.h"
+#include "server.h"
 #include "exponential_random_number.h"
 
 Simulation::Simulation(double inter_arrival_time_mean, double service_time_mean, int number_of_customers)
@@ -25,7 +25,7 @@ void Simulation::Initialize()
 {
     // Set clock time to 0 and server status to Idle
     this->clock = 0;
-    this->server_status = ServerStatus::IDLE;
+    this->server.SetServerStatus(ServerStatus::IDLE);
 
     // Schedule the first arrival event
     Event arrival_event(EventType::ARRIVAL, this->clock + this->inter_arrival_time_generator.GetRandomNumber());
@@ -52,7 +52,7 @@ void Simulation::Run()
 
 void Simulation::HandleArrival()
 {
-    // Create a new Customer
+    // Create a new Customer with its arrival time
     Customer customer(this->clock);
 
     // Schedule next arrival event if customer limit is not crossed
@@ -63,42 +63,42 @@ void Simulation::HandleArrival()
     }
 
     // If server is Busy, send customer to queue
-    if (this->server_status == ServerStatus::BUSY)
+    if (this->server.GetServerStatus() == ServerStatus::BUSY)
     {
         // Send customer to the queue
         this->service_queue.push(customer);
 
         // Log the arrival event
-        Log::CreateRecord("Arrival", this->clock, customer.GetSerial(), this->server_status, this->service_queue.size());
+        CreateArrivalLog(customer);
     }
     // If server is idle, get into service immediately
-    else if (this->server_status == ServerStatus::IDLE)
+    else if (this->server.GetServerStatus() == ServerStatus::IDLE)
     {
         // Log the arrival event
-        Log::CreateRecord("Arrival", this->clock, customer.GetSerial(), this->server_status, this->service_queue.size());
+        CreateArrivalLog(customer);
 
         // Send the customer to server
         this->currently_served_customer = customer;
 
         // Set server status to Busy
-        this->server_status = ServerStatus::BUSY;
+        this->server.SetServerStatus(ServerStatus::BUSY);
 
         // Schedule the departure event (end of service)
         Event departure_event(EventType::DEPARTURE, this->clock + this->service_time_generator.GetRandomNumber());
         this->event_queue.push(departure_event);
 
         // Log the service event
-        Log::CreateRecord("Service", this->clock, currently_served_customer.GetSerial(), this->server_status, this->service_queue.size());
+        CreateServiceLog();
     }
 }
 
 void Simulation::HandleDeparture()
 {
     // Set server status to Idle
-    this->server_status = ServerStatus::IDLE;
+    this->server.SetServerStatus(ServerStatus::IDLE);
 
     // Log the departure event and empty the server
-    Log::CreateRecord("Departure", this->clock, currently_served_customer.GetSerial(), this->server_status, this->service_queue.size());
+    CreateDepartureLog();
 
     // If there are customers in queue, decrease queue length and schedule service time
     if (!(this->service_queue.empty()))
@@ -110,13 +110,36 @@ void Simulation::HandleDeparture()
         this->service_queue.pop();
 
         // Set server to busy state
-        this->server_status = ServerStatus::BUSY;
+        this->server.SetServerStatus(ServerStatus::BUSY);
 
         // Schedule the departure event (end of service)
         Event departure_event(EventType::DEPARTURE, this->clock + this->service_time_generator.GetRandomNumber());
         this->event_queue.push(departure_event);
 
         // Log the service event
-        Log::CreateRecord("Service", this->clock, currently_served_customer.GetSerial(), this->server_status, this->service_queue.size());
+        CreateServiceLog();
     }
+}
+
+void Simulation::CreateArrivalLog(Customer customer)
+{
+    this->simulation_log.CreateEventRecord("Arrival", this->clock, customer.GetSerial(), this->server.GetServerStatus(), this->service_queue.size());
+}
+
+void Simulation::CreateServiceLog()
+{
+    this->simulation_log.CreateEventRecord("Service", this->clock, currently_served_customer.GetSerial(), this->server.GetServerStatus(), this->service_queue.size());
+    currently_served_customer.SetServiceStartTime(this->clock);
+}
+
+void Simulation ::CreateDepartureLog()
+{
+    this->simulation_log.CreateEventRecord("Departure", this->clock, currently_served_customer.GetSerial(), this->server.GetServerStatus(), this->service_queue.size());
+    currently_served_customer.SetDepartureTime(this->clock);
+    this->simulation_log.CreateCustomerRecord(currently_served_customer);
+}
+
+SimulationLog *Simulation::GetSimulationLog()
+{
+    return &(this->simulation_log);
 }
