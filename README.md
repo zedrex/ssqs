@@ -35,9 +35,9 @@ The program produces `src/statistics.csv`, `src/event.csv` and `src/customer.csv
 | 10.000000       | 104.499340            | 4.854019                   | 9.154132             | 23.162624           | 2.216533             | 87.599907%         |
 
 
+<hr>
 
-
-#### `src/event.csv'
+#### `src/event.csv`
 | Type      | Start Time | Customer | Server Status | Queue Size |
 | --------- | ---------- | -------- | ------------- | ---------- |
 | Arrival   | 12.958016  | 1        | Idle          | 0          |
@@ -72,7 +72,7 @@ The program produces `src/statistics.csv`, `src/event.csv` and `src/customer.csv
 | Departure | 104.499340 | 10       | Idle          | 0          |
 
 
-
+<hr>
 
 #### `src/customer.csv`
 | Serial | Arrival Time | Queue Time | Service Start Time | Service Duration | Departure Time |
@@ -98,6 +98,7 @@ The program produces `src/statistics.csv`, `src/event.csv` and `src/customer.csv
 Total Customers,Total Simulation Time,Average Inter Arrival Time,Average Service Time,Average Queue Delay,Average Queue Length,Server Utilization
 10.000000,104.499340,4.854019,9.154132,23.162624,2.216533,87.599907%
 ```
+<hr>
 
 #### `src/event.csv`
 ```csv
@@ -133,6 +134,8 @@ Departure,103.668718,9,Idle,1
 Service,103.668718,10,Busy,0
 Departure,104.499340,10,Idle,0
 ```
+<hr>
+
 #### `src/customer.csv`
 ```csv
 Serial,Arrival Time,Queue Time,Service Start Time,Service Duration,Departure Time
