@@ -13,6 +13,9 @@ class CustomerRecord
     double service_start_time;
     double departure_time;
 
+    // Gap between previous customer and this (in time)
+    double arrival_time_gap;
+
     // Queue stay time
     double queue_delay_time;
 

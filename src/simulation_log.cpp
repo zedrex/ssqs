@@ -45,10 +45,12 @@ void SimulationLog::CreateSimulationSummary()
         if (i == 0)
         {
             this->total_inter_arrival_time += this->customer_records[i].arrival_time;
+            this->customer_records[i].arrival_time_gap = this->customer_records[i].arrival_time;
         }
         else
         {
             this->total_inter_arrival_time += this->customer_records[i].arrival_time - this->customer_records[i - 1].arrival_time;
+            this->customer_records[i].arrival_time_gap = this->customer_records[i].arrival_time - this->customer_records[i - 1].arrival_time;
         }
 
         this->total_queue_delay_time += this->customer_records[i].queue_delay_time;
@@ -80,20 +82,20 @@ void SimulationLog::CreateStatisticalData()
 
 std::string SimulationLog::GetEventRecords()
 {
-    std::string event_record_csv = "Type,Start Time,Customer,Server Status,Queue Size\n";
+    std::string event_record_csv = "Type,Start Time,Customer,Server Status,Queue Size,Customer In System\n";
     for (EventRecord event_record : this->event_records)
     {
-        event_record_csv += event_record.event_type + "," + std::to_string(event_record.current_simulation_time) + "," + std::to_string(event_record.customer_serial) + "," + (event_record.current_server_status == ServerStatus::BUSY ? "Busy" : "Idle") + "," + std::to_string(event_record.current_queue_size) + "\n";
+        event_record_csv += event_record.event_type + "," + std::to_string(event_record.current_simulation_time) + "," + std::to_string(event_record.customer_serial) + "," + (event_record.current_server_status == ServerStatus::BUSY ? "Busy" : "Idle") + "," + std::to_string(event_record.current_queue_size) + "," + std::to_string(event_record.current_queue_size + (event_record.current_server_status == ServerStatus::BUSY ? 1 : 0)) + "\n";
     }
     return event_record_csv;
 }
 
 std::string SimulationLog::GetCustomerRecords()
 {
-    std::string customer_record_csv = "Serial,Arrival Time,Queue Time,Service Start Time,Service Duration,Departure Time\n";
+    std::string customer_record_csv = "Customer,Arrival Interval,Arrival Time,Service Start Time,Departure Time,Queue Delay Duration,Service Duration,Sojourn Time\n";
     for (CustomerRecord customer_record : this->customer_records)
     {
-        customer_record_csv += std::to_string(customer_record.serial) + "," + std::to_string(customer_record.arrival_time) + "," + std::to_string(customer_record.queue_delay_time) + "," + std::to_string(customer_record.service_start_time) + "," + std::to_string(customer_record.service_time) + "," + std::to_string(customer_record.departure_time) + "\n";
+        customer_record_csv += std::to_string(customer_record.serial) + "," + std::to_string(customer_record.arrival_time_gap) + "," + std::to_string(customer_record.arrival_time) + "," + std::to_string(customer_record.service_start_time) + "," + std::to_string(customer_record.departure_time) + "," + std::to_string(customer_record.queue_delay_time) + "," + std::to_string(customer_record.service_time) + "," + std::to_string(customer_record.service_time + customer_record.queue_delay_time) + "\n";
     }
     return customer_record_csv;
 }
